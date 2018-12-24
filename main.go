@@ -19,7 +19,6 @@ func scrapyOficinas() []Oficina {
 
 	// On every a element which has href attribute call callback
 	c.OnHTML("#form", func(e *colly.HTMLElement) {
-
 		e.ForEach("option", func(index int, elem *colly.HTMLElement) {
 
 			oficina := NewOficina(HOST, elem)

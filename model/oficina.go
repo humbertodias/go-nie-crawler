@@ -22,17 +22,21 @@ func (o Oficina) Valid() bool {
 
 func NewOficina(host string, elem *colly.HTMLElement) Oficina {
 	url, _ := elem.DOM.Attr("value")
-	parts := strings.Split(url, "=")
-	var ID = "-1"
-	if len(parts) > 1 {
-		ID = parts[1]
-	}
+	ID := OficinaExtractId(url)
 	name := elem.Text
-
 	return Oficina{
 		ID:   ID,
 		Name: name,
 		URL:  host + url,
 	}
 
+}
+
+func OficinaExtractId(url string) string {
+	var id = "-1"
+	parts := strings.Split(url, "=")
+	if len(parts) > 1 {
+		id = parts[1]
+	}
+	return id
 }
