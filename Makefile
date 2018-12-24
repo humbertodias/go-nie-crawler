@@ -2,7 +2,7 @@ get:
 	go get -u github.com/gocolly/colly/...
 
 run:
-	go run main.go scrapy.go
+	go run main.go
 
 lint:
 	golint

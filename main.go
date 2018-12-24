@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/humbertodias/go-crawler-demo/nie"
 	"io/ioutil"
 )
 
@@ -17,9 +18,9 @@ func writeJSON(arr interface{}, filename string) {
 }
 
 func main() {
-	oficinas := scrapyOficinas()
+	oficinas := nie.ScrapyOficinas()
 	writeJSON(oficinas, "oficinas.json")
 
-	tramites := scrapyTramites(oficinas)
+	tramites := nie.ScrapyTramites(oficinas)
 	writeJSON(tramites, "tramites.json")
 }
