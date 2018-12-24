@@ -1,6 +1,7 @@
 package nie
 
 import (
+	"fmt"
 	"github.com/gocolly/colly"
 	. "github.com/humbertodias/go-crawler-demo/model"
 )
@@ -8,8 +9,8 @@ import (
 const HOST = "https://sede.administracionespublicas.gob.es"
 const HOST_START_SCRAPPING = HOST + "/icpplus/"
 
-func ScrapyOficinas() []Oficina {
-	var oficinas []Oficina
+func ScrapyProvincias() []Provincia {
+	var provincias []Provincia
 
 	// Instantiate default collector
 	c := colly.NewCollector()
@@ -18,10 +19,10 @@ func ScrapyOficinas() []Oficina {
 	c.OnHTML("#form", func(e *colly.HTMLElement) {
 		e.ForEach("option", func(index int, elem *colly.HTMLElement) {
 
-			oficina := NewOficina(HOST, elem)
+			oficina := NewProvincia(HOST, elem)
 			if oficina.Valid() {
 				c.Visit(oficina.URL)
-				oficinas = append(oficinas, oficina)
+				provincias = append(provincias, oficina)
 			}
 
 		})
@@ -31,10 +32,10 @@ func ScrapyOficinas() []Oficina {
 	// Start scraping
 	c.Visit(HOST_START_SCRAPPING)
 
-	return oficinas
+	return provincias
 }
 
-func ScrapyTramites(oficinas []Oficina) []Tramite {
+func ScrapyTramites(provincias []Provincia) []Tramite {
 	var tramites []Tramite
 	c := colly.NewCollector()
 
@@ -50,9 +51,45 @@ func ScrapyTramites(oficinas []Oficina) []Tramite {
 
 	})
 
-	for _, oficina := range oficinas {
+	for _, oficina := range provincias {
 		c.Visit(oficina.URL)
 	}
 
 	return tramites
+}
+
+// https://sede.administracionespublicas.gob.es/icpplus/acCitar
+func ScrapyOficinas(tramites []Tramite) []Oficina {
+	var oficinas []Oficina
+	c := colly.NewCollector()
+
+	//	c.OnHTML("#idSede", func(e *colly.HTMLElement) {
+	c.OnHTML("html", func(e *colly.HTMLElement) {
+
+		url := e.Request.URL.String()
+		e.ForEach("option", func(_ int, elem *colly.HTMLElement) {
+			oficina := NewOficina(url, elem)
+			if oficina.Valid() {
+				oficinas = append(oficinas, oficina)
+			}
+		})
+
+	})
+
+	//
+	//	URL := "https://sede.administracionespublicas.gob.es/icpplus/acInfo"
+	URL := "https://sede.administracionespublicas.gob.es/icpplus/acCitar"
+
+	for _, tramite := range tramites {
+		params := map[string]string{
+			"tramite": tramite.ID,
+		}
+		err := c.Post(URL, params)
+		if err != nil {
+			fmt.Println(err)
+		}
+		c.Wait()
+	}
+
+	return oficinas
 }

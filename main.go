@@ -18,9 +18,12 @@ func writeJSON(arr interface{}, filename string) {
 }
 
 func main() {
-	oficinas := nie.ScrapyOficinas()
-	writeJSON(oficinas, "oficinas.json")
+	provincias := nie.ScrapyProvincias()
+	writeJSON(provincias, "provincias.json")
 
-	tramites := nie.ScrapyTramites(oficinas)
+	tramites := nie.ScrapyTramites(provincias)
 	writeJSON(tramites, "tramites.json")
+
+	oficinas := nie.ScrapyOficinas(tramites)
+	writeJSON(oficinas, "oficinas.json")
 }

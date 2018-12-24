@@ -14,4 +14,4 @@ fix:
 	go fix
 
 clean:
-	rm -rf oficinas.json tramites.json 
+	rm -rf *.json
