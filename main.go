@@ -44,9 +44,9 @@ func NewOficina(elem *colly.HTMLElement) Oficina {
 }
 
 type Tramite struct {
+	ID   string `json:"id"`
 	Name string `json:"name"`
 	URL  string `json:"url"`
-	ID   string `json:"id"`
 }
 
 func (o Tramite) String() string {
@@ -58,13 +58,13 @@ func (o Tramite) Valid() bool {
 }
 
 func NewTramite(url string, elem *colly.HTMLElement) Tramite {
-	value, _ := elem.DOM.Attr("value")
+	ID, _ := elem.DOM.Attr("value")
 	name := elem.Text
 
 	return Tramite{
+		ID:   ID,
 		URL:  url,
 		Name: name,
-		ID:   value,
 	}
 }
 
@@ -118,9 +118,12 @@ func scrapyTramites(oficinas []Oficina) []Tramite {
 	return tramites
 }
 
-func writeJson(arr interface{}, filename string) {
-	jsonMarshal, _ := json.Marshal(arr)
-	err := ioutil.WriteFile(filename, jsonMarshal, 0644)
+func writeJSON(arr interface{}, filename string) {
+	jsonMarshal, err := json.Marshal(arr)
+	if err != nil {
+		panic(err)
+	}
+	err = ioutil.WriteFile(filename, jsonMarshal, 0644)
 	if err != nil {
 		panic(err)
 	}
@@ -128,8 +131,8 @@ func writeJson(arr interface{}, filename string) {
 
 func main() {
 	oficinas := scrapyOficinas()
-	writeJson(oficinas, "oficinas.json")
+	writeJSON(oficinas, "oficinas.json")
 
 	tramites := scrapyTramites(oficinas)
-	writeJson(tramites, "tramites.json")
+	writeJSON(tramites, "tramites.json")
 }
