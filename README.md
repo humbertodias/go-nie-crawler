@@ -1,6 +1,6 @@
-# go-crawler-demo
+# GO Crawler Demo
 
-Go crawler demo
+Simple crawler that extract some useful informations from sede.administracionespublicas.gob.es.
 
 # Clone
 
