@@ -2,71 +2,14 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
-	"strings"
 
+	. "./model"
 	"github.com/gocolly/colly"
 )
 
 const HOST = "https://sede.administracionespublicas.gob.es"
 const HOST_START_SCRAPPING = HOST + "/icpplus/"
-
-type Oficina struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
-	URL  string `json:"url"`
-}
-
-func (o Oficina) String() string {
-	return fmt.Sprintf("%d: %s", o.ID, o.Name)
-}
-
-func (o Oficina) Valid() bool {
-	return strings.Contains(o.URL, "?p=") && !strings.Contains(o.ID, "-1")
-}
-
-func NewOficina(elem *colly.HTMLElement) Oficina {
-	url, _ := elem.DOM.Attr("value")
-	parts := strings.Split(url, "=")
-	var ID = "-1"
-	if len(parts) > 1 {
-		ID = parts[1]
-	}
-	name := elem.Text
-
-	return Oficina{
-		ID:   ID,
-		Name: name,
-		URL:  HOST + url,
-	}
-
-}
-
-type Tramite struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
-	URL  string `json:"url"`
-}
-
-func (o Tramite) String() string {
-	return fmt.Sprintf("%s %s %s", o.ID, o.Name, o.URL)
-}
-
-func (o Tramite) Valid() bool {
-	return !strings.Contains(o.ID, "-1")
-}
-
-func NewTramite(url string, elem *colly.HTMLElement) Tramite {
-	ID, _ := elem.DOM.Attr("value")
-	name := elem.Text
-
-	return Tramite{
-		ID:   ID,
-		URL:  url,
-		Name: name,
-	}
-}
 
 func scrapyOficinas() []Oficina {
 	var oficinas []Oficina
@@ -79,7 +22,7 @@ func scrapyOficinas() []Oficina {
 
 		e.ForEach("option", func(index int, elem *colly.HTMLElement) {
 
-			oficina := NewOficina(elem)
+			oficina := NewOficina(HOST, elem)
 			if oficina.Valid() {
 				c.Visit(oficina.URL)
 				oficinas = append(oficinas, oficina)
