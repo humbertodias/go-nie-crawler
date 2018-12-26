@@ -3,7 +3,11 @@ package nie
 import (
 	"fmt"
 	"github.com/gocolly/colly"
+	"github.com/gocolly/colly/debug"
 	. "github.com/humbertodias/go-crawler-demo/model"
+	"net"
+	"net/http"
+	"time"
 )
 
 const HOST = "https://sede.administracionespublicas.gob.es"
@@ -13,7 +17,7 @@ func ScrapyProvincias() []Provincia {
 	var provincias []Provincia
 
 	// Instantiate default collector
-	c := colly.NewCollector()
+	c := NewCollector()
 
 	// On every a element which has href attribute call callback
 	c.OnHTML("#form", func(e *colly.HTMLElement) {
@@ -37,7 +41,7 @@ func ScrapyProvincias() []Provincia {
 
 func ScrapyTramites(provincias []Provincia) []Tramite {
 	var tramites []Tramite
-	c := colly.NewCollector()
+	c := NewCollector()
 
 	c.OnHTML("#tramite", func(e *colly.HTMLElement) {
 
@@ -61,7 +65,7 @@ func ScrapyTramites(provincias []Provincia) []Tramite {
 // https://sede.administracionespublicas.gob.es/icpplus/acCitar
 func ScrapyOficinas(tramites []Tramite) []Oficina {
 	var oficinas []Oficina
-	c := colly.NewCollector()
+	c := NewCollector()
 
 	//	c.OnHTML("#idSede", func(e *colly.HTMLElement) {
 	c.OnHTML("html", func(e *colly.HTMLElement) {
@@ -92,4 +96,25 @@ func ScrapyOficinas(tramites []Tramite) []Oficina {
 	}
 
 	return oficinas
+}
+
+
+func NewCollector() *colly.Collector {
+	cd := colly.Debugger(&debug.LogDebugger{})
+	c := colly.NewCollector(cd)
+
+	c.WithTransport(&http.Transport{
+		Proxy: http.ProxyFromEnvironment,
+		DialContext: (&net.Dialer{
+			Timeout:   5 * time.Second,
+			KeepAlive: 5 * time.Second,
+			DualStack: true,
+		}).DialContext,
+		MaxIdleConns:          100,
+		IdleConnTimeout:       90 * time.Second,
+		TLSHandshakeTimeout:   10 * time.Second,
+		ExpectContinueTimeout: 1 * time.Second,
+	})
+
+	return c
 }
