@@ -8,13 +8,13 @@ init:
 	mkdir dist
 
 build-mac:  init
-	GOOS=darwin GOARCH=amd64 go build -o dist/nie-crawler-mac
+	GOOS=darwin GOARCH=amd64 go build -o dist/nie-crawler-$(GOARCH)-$(GOOS)
 
 build-lin:  init
-	GOOS=linux GOARCH=amd64 go build -o dist/nie-crawler-lin
+	GOOS=linux GOARCH=amd64 go build -o dist/nie-crawler--$(GOARCH)-$(GOOS)
 
 build-win:  init
-	GOOS=windows GOARCH=amd64 go build  -o dist/nie-crawler-win
+	GOOS=windows GOARCH=amd64 go build -o dist/nie-crawler-$(GOARCH)-$(GOOS)
 
 build: build-mac    build-lin   build-win
 
