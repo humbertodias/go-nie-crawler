@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/humbertodias/go-crawler-demo/nie"
+	"github.com/humbertodias/go-nie-crawler/nie"
 	"io/ioutil"
 )
 
