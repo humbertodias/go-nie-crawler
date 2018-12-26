@@ -12,6 +12,3 @@ build(){
 
 
 build
-
-echo 'Logs from build'
-cat $(pwd)/unity.log

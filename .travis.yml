@@ -22,3 +22,11 @@ deploy:
     skip_cleanup: true
     on:
       tags: true
+
+
+notifications:
+  email:
+    recipients:
+      - hldtux@gmail.com
+    on_success: never # default: change
+    on_failure: always # default: always
