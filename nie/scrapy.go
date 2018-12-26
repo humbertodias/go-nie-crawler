@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/gocolly/colly"
 	"github.com/gocolly/colly/debug"
-	. "github.com/humbertodias/go-crawler-demo/model"
+	. "github.com/humbertodias/go-nie-crawler/model"
 	"net"
 	"net/http"
 	"time"
