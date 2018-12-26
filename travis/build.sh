@@ -7,6 +7,7 @@ ls -lha $(pwd)
 
 build(){
   echo "Attempting to build $project for OS X"
+  make get
   make build
 }
 
