@@ -5,7 +5,7 @@ run:
 	go run main.go
 
 init:
-    mkdir dist
+	mkdir dist
 
 build-mac:  init
 	GOOS=darwin GOARCH=amd64 go build -o dist/nie-crawler-mac
