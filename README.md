@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/humbertodias/go-nie-crawler.svg?branch=master)](https://travis-ci.org/humbertodias/go-nie-crawler)
+
+
 # GO Crawler Demo
 
 Simple crawler that extract some useful informations from sede.administracionespublicas.gob.es.
