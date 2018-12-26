@@ -1,29 +1,17 @@
 package main
 
 import (
-	"encoding/json"
+	"github.com/humbertodias/go-nie-crawler/helper"
 	"github.com/humbertodias/go-nie-crawler/nie"
-	"io/ioutil"
 )
-
-func writeJSON(arr interface{}, filename string) {
-	jsonMarshal, err := json.Marshal(arr)
-	if err != nil {
-		panic(err)
-	}
-	err = ioutil.WriteFile(filename, jsonMarshal, 0644)
-	if err != nil {
-		panic(err)
-	}
-}
 
 func main() {
 	provincias := nie.ScrapyProvincias()
-	writeJSON(provincias, "provincias.json")
+	helper.WriteJSON(provincias, "provincias.json")
 
 	tramites := nie.ScrapyTramites(provincias)
-	writeJSON(tramites, "tramites.json")
+	helper.WriteJSON(tramites, "tramites.json")
 
 	oficinas := nie.ScrapyOficinas(tramites)
-	writeJSON(oficinas, "oficinas.json")
+	helper.WriteJSON(oficinas, "oficinas.json")
 }
