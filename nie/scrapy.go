@@ -3,12 +3,13 @@ package nie
 import (
 	"crypto/tls"
 	"fmt"
-	"github.com/gocolly/colly"
-	"github.com/gocolly/colly/debug"
-	. "github.com/humbertodias/go-nie-crawler/model"
 	"net"
 	"net/http"
 	"time"
+
+	"github.com/gocolly/colly"
+	"github.com/gocolly/colly/debug"
+	. "github.com/humbertodias/go-nie-crawler/model"
 )
 
 const HOST = "https://sede.administracionespublicas.gob.es"
