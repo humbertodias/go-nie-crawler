@@ -16,7 +16,8 @@ script:
 deploy:
   - provider: releases
     file_glob: true
-    file: go-nie-crawler
+    file:
+      - dist/*
     api_key: $GITHUB_TOKEN
     skip_cleanup: true
     on:
