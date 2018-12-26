@@ -1,3 +1,4 @@
 #!/bin/sh
 
-echo Install
+echo Installing
+make get
