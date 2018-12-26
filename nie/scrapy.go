@@ -13,7 +13,7 @@ import (
 const HOST = "https://sede.administracionespublicas.gob.es"
 const HOST_START_SCRAPPING = HOST + "/icpplus/"
 
-func ScrapyProvincias() []Provincia {
+func ScrapyProvincias(ids ...string) []Provincia {
 	var provincias []Provincia
 
 	// Instantiate default collector
@@ -24,7 +24,7 @@ func ScrapyProvincias() []Provincia {
 		e.ForEach("option", func(index int, elem *colly.HTMLElement) {
 
 			oficina := NewProvincia(HOST, elem)
-			if oficina.Valid() {
+			if oficina.Valid() && CanAddID(ids, oficina.ID) {
 				c.Visit(oficina.URL)
 				provincias = append(provincias, oficina)
 			}
@@ -37,6 +37,18 @@ func ScrapyProvincias() []Provincia {
 	c.Visit(HOST_START_SCRAPPING)
 
 	return provincias
+}
+func CanAddID(ids []string, id string) bool{
+	return len(ids) == 0  || Contains(ids, id)
+}
+
+func Contains(ar []string, x string) bool {
+	for _, n := range ar {
+		if x == n {
+			return true
+		}
+	}
+	return false
 }
 
 func ScrapyTramites(provincias []Provincia) []Tramite {

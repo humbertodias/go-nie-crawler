@@ -7,9 +7,9 @@ import (
 )
 
 func TestProvincias(t *testing.T) {
-	provincias := nie.ScrapyProvincias()
+	provincias := nie.ScrapyProvincias("13")
 	if len(provincias) == 0 {
-		t.Failed()
+		t.Errorf("Length of provincias was incorrect, got: %d, want: %s.", 0, ">0")
 	}
 }
 
