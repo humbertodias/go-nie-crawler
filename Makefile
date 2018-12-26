@@ -16,7 +16,7 @@ build-lin:  init
 	GOOS=linux GOARCH=amd64 go build -o dist/nie-crawler-linux-amd64-$(TAG_NAME)
 
 build-win:  init
-	GOOS=windows GOARCH=amd64 go build -o dist/nie-crawler-windows-amd64-$(TAG_NAME)
+	GOOS=windows GOARCH=amd64 go build -o dist/nie-crawler-windows-amd64-$(TAG_NAME).exe
 
 build: build-mac    build-lin   build-win
 
