@@ -1,6 +1,7 @@
 package nie
 
 import (
+	"crypto/tls"
 	"fmt"
 	"github.com/gocolly/colly"
 	"github.com/gocolly/colly/debug"
@@ -38,8 +39,8 @@ func ScrapyProvincias(ids ...string) []Provincia {
 
 	return provincias
 }
-func CanAddID(ids []string, id string) bool{
-	return len(ids) == 0  || Contains(ids, id)
+func CanAddID(ids []string, id string) bool {
+	return len(ids) == 0 || Contains(ids, id)
 }
 
 func Contains(ar []string, x string) bool {
@@ -110,13 +111,13 @@ func ScrapyOficinas(tramites []Tramite) []Oficina {
 	return oficinas
 }
 
-
 func NewCollector() *colly.Collector {
 	cd := colly.Debugger(&debug.LogDebugger{})
 	c := colly.NewCollector(cd)
 
 	c.WithTransport(&http.Transport{
-		Proxy: http.ProxyFromEnvironment,
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		Proxy:           http.ProxyFromEnvironment,
 		DialContext: (&net.Dialer{
 			Timeout:   5 * time.Second,
 			KeepAlive: 5 * time.Second,
@@ -126,6 +127,11 @@ func NewCollector() *colly.Collector {
 		IdleConnTimeout:       90 * time.Second,
 		TLSHandshakeTimeout:   10 * time.Second,
 		ExpectContinueTimeout: 1 * time.Second,
+	})
+
+	// Set error handler
+	c.OnError(func(r *colly.Response, err error) {
+		fmt.Println("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", err)
 	})
 
 	return c
