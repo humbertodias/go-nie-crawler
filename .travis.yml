@@ -4,11 +4,11 @@ go:
   - "1.11.x"
   - master
 
-#deploy:
-#  provider: releases
-#  api_key:
-#    secure: YOUR_API_KEY_ENCRYPTED
-#  file: "go_nie_crawler"
-#  skip_cleanup: true
-#  on:
-#    tags: true
+deploy:
+  - provider: releases
+    file_glob: true
+    file: go-nie-crawler
+    api_key: $GITHUB_TOKEN
+    skip_cleanup: true
+    on:
+      tags: true
