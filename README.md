@@ -5,14 +5,14 @@ Simple crawler that extract some useful informations from sede.administracionesp
 # Clone
 
     mkdir -p ~/go/src/github.com/humbertodias && cd $_
-    git clone https://github.com/humbertodias/go-crawler-demo
-    cd go-crawler-demo
+    git clone https://github.com/humbertodias/go-nie-crawler
+    cd go-nie-crawler
 
 # Run
 
     make run
 
-Check the files: oficinas.json, tramites.json
+Check the files: provincias.json, tramites.json
 
 # Ref
 
