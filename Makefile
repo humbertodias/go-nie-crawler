@@ -1,8 +1,8 @@
 TAG_NAME=$(shell git describe --abbrev=0 --tags)
 APP_NAME=nie-crawler
-MAC_DIST=dist/$(APP_NAME)-darwin-amd64-$(TAG_NAME).app
-LIN_DIST=dist/$(APP_NAME)-linux-amd64-$(TAG_NAME)
-WIN_DIST=dist/$(APP_NAME)-windows-amd64-$(TAG_NAME).exe
+MAC_EXE=$(APP_NAME)-darwin-amd64-$(TAG_NAME).app
+LIN_EXE=$(APP_NAME)-linux-amd64-$(TAG_NAME)
+WIN_EXE=$(APP_NAME)-windows-amd64-$(TAG_NAME).exe
 
 get:
 	go get -u github.com/gocolly/colly/...
@@ -14,19 +14,19 @@ init:
 	mkdir -p dist
 
 build-mac:  init
-	GOOS=darwin GOARCH=amd64 go build -o $(MAC_DIST)
-	chmod +x $(MAC_DIST)
-	tar zcvf $(MAC_DIST).tar.gz $(MAC_DIST)
+	GOOS=darwin GOARCH=amd64 go build -o dist/$(MAC_EXE)
+	chmod +x dist/$(MAC_EXE)
+	tar zcvf dist/$(MAC_EXE).tar.gz -C dist $(MAC_EXE)
 
 build-lin:  init
-	GOOS=linux GOARCH=amd64 go build -o $(LIN_DIST)
-	chmod +x $(LIN_DIST)
-	tar zcvf $(LIN_DIST).tar.gz $(LIN_DIST)
+	GOOS=linux GOARCH=amd64 go build -o dist/$(LIN_EXE)
+	chmod +x dist/$(LIN_EXE)
+	tar zcvf dist/$(LIN_EXE).tar.gz -C dist $(LIN_EXE)
 
 build-win:  init
-	GOOS=windows GOARCH=amd64 go build -o $(WIN_DIST)
-	chmod +x $(WIN_DIST)
-	zip -9 -r $(WIN_DIST).zip $(WIN_DIST)
+	GOOS=windows GOARCH=amd64 go build -o dist/$(WIN_EXE)
+	chmod +x dist/$(WIN_EXE)
+	zip -9 -D -r dist/$(WIN_EXE).zip dist/$(WIN_EXE)
 
 build: build-mac    build-lin   build-win
 
