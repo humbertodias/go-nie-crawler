@@ -4,8 +4,13 @@ MAC_EXE=$(APP_NAME)-darwin-amd64-$(TAG_NAME).app
 LIN_EXE=$(APP_NAME)-linux-amd64-$(TAG_NAME)
 WIN_EXE=$(APP_NAME)-windows-amd64-$(TAG_NAME).exe
 
+go-install:
+	curl -LO https://go.dev/dl/go1.19.2.linux-amd64.tar.gz
+	rm -rf /usr/local/go && tar -C /usr/local -xzf go1.19.2.linux-amd64.tar.gz
+	echo -e 'export PATH=$PATH:/usr/local/go/bin' >> /tmp/.bashrc
+
 get:
-	go get -u github.com/gocolly/colly/...
+	go install github.com/gocolly/colly/...@latest
 
 run:
 	go run main.go
